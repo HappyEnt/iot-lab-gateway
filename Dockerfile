@@ -61,6 +61,7 @@ RUN apt-get update && \
         binutils \
         # AVR (arduino like)
         avrdude \
+        # libjaylink=0.2.0-1 \
         avarice \
         && \
     apt-get clean
@@ -69,24 +70,34 @@ RUN apt-get update && \
 RUN mkdir /var/www && chown www-data:www-data /var/www
 
 #openocd 0.10
-RUN git clone https://github.com/ntfreak/openocd openocd10 && \
-    cd openocd10 && \
-    git checkout v0.10.0 && \
-    ./bootstrap && \
-    ./configure --enable-cmsis-dap --enable-hidapi-libusb --disable-werror && \
-    make && \
-    make install && \
-    cd .. && rm -rf openocd10
+# RUN git clone https://github.com/ntfreak/openocd openocd10 && \
+#     cd openocd10 && \
+#     git checkout v0.10.0 && \
+#     ./bootstrap && \
+#     ./configure --enable-cmsis-dap --enable-hidapi-libusb --disable-werror && \
+#     make && \
+#     make install && \
+#     cd .. && rm -rf openocd10
 
 #openocd dev
 RUN git clone https://github.com/ntfreak/openocd openocd-dev && \
     cd openocd-dev && \
     git checkout 7c88e76a76588fa0e3ab645adfc46e8baff6a3e4 && \
     ./bootstrap && \
-    ./configure --prefix=/opt/openocd-dev --enable-cmsis-dap --enable-hidapi-libusb && \
+    ./configure --enable-cmsis-dap --enable-hidapi-libusb && \
     make && \
     make install && \
     cd .. && rm -rf openocd-dev
+
+# RUN git clone https://github.com/openocd-org/openocd openocd-dev && \
+#     cd openocd-dev && \
+#     # git checkout 7c88e76a76588fa0e3ab645adfc46e8baff6a3e4 && \
+#     ./bootstrap && \
+#     # ./configure --prefix=/opt/openocd-dev --enable-cmsis-dap --enable-hidapi-libusb && \ # don't install in prefix
+#     ./configure --enable-cmsis-dap --enable-hidapi-libusb --enable-jlink && \
+#     make && \
+#     make install && \
+#     cd .. && rm -rf openocd-dev
 
 # edbg
 RUN git clone https://github.com/ataradov/edbg && \

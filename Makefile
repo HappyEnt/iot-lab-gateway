@@ -69,6 +69,7 @@ run: setup-cfg-dir setup-exp-dir
 		$(DOCKER_CN_MAPPING) \
 		-v /tmp/cfg_dir:/var/local/config \
 		-v /tmp/exp_dir:$(WORKDIR) \
+	        --restart=always \ # does not work together with --rm
 		-p $(PORT):8080 \
 		-p $(SERIAL_PORT):20000 \
 		--privileged \
