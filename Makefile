@@ -63,13 +63,12 @@ DOCKER_CN_MAPPING = -v /dev/ttyCN:/dev/ttyCN
 endif
 
 run: setup-cfg-dir setup-exp-dir
-	docker run -it \
+	docker run --restart=always -it \
 		-v $(PWD):/shared \
 		-v /dev/iotlab:/dev/iotlab \
 		$(DOCKER_CN_MAPPING) \
 		-v /tmp/cfg_dir:/var/local/config \
 		-v /tmp/exp_dir:$(WORKDIR) \
-	        --restart=always \ # does not work together with --rm
 		-p $(PORT):8080 \
 		-p $(SERIAL_PORT):20000 \
 		--privileged \
