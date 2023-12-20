@@ -63,7 +63,7 @@ DOCKER_CN_MAPPING = -v /dev/ttyCN:/dev/ttyCN
 endif
 
 run: setup-cfg-dir setup-exp-dir
-	docker run -it --rm \
+	docker run -it \
 		-v $(PWD):/shared \
 		-v /dev/iotlab:/dev/iotlab \
 		$(DOCKER_CN_MAPPING) \
