@@ -26,10 +26,10 @@ setup-udev-rules:
 	sudo udevadm control --reload-rules
 
 setup-cfg-dir:
-	cp -R $(PWD)/tests_utils/cfg_dir /tmp/.
-	echo $(BOARD) > /tmp/cfg_dir/board_type
-	echo $(CONTROL_NODE_TYPE) > /tmp/cfg_dir/control_node_type
-	echo $(BOARD)-00 > /tmp/cfg_dir/hostname
+	cp -R $(PWD)/tests_utils/cfg_dir  /home/admin/iot-lab/.
+	echo $(BOARD) > /home/admin/iot-lab/cfg_dir/board_type
+	echo $(CONTROL_NODE_TYPE) >  /home/admin/iot-lab/cfg_dir/control_node_type
+	echo $(BOARD)-00 >  /home/admin/iot-lab/cfg_dir/hostname
 
 test:
 	docker run --rm \
@@ -42,7 +42,7 @@ integration-test: setup-cfg-dir
 	docker run --rm \
 		-v $(PWD):/shared \
 		-v /dev/iotlab:/dev/iotlab \
-		-v /tmp/cfg_dir:/shared/cfg_dir \
+		-v /home/admin/iot-lab/cfg_dir:/shared/cfg_dir \
 		-e LOCAL_USER_ID=`id -u $(USER)` \
 		-e IOTLAB_GATEWAY_CFG_DIR=/shared/cfg_dir \
 		--privileged \
@@ -54,10 +54,10 @@ FOLDERS = consumption radio event sniffer log
 WORKDIR= /iotlab/users/$(GW_USER)/.iot-lab/$(EXPERIMENT)
 
 setup-exp-dir:
-	rm -rf /tmp/exp_dir; mkdir /tmp/exp_dir;
-	for f in $(FOLDERS); do rm -rf /tmp/exp_dir/$$f; mkdir /tmp/exp_dir/$$f; done
+	rm -rf /home/admin/iot-lab/exp_dir; mkdir /home/admin/iot-lab/exp_dir;
+	for f in $(FOLDERS); do rm -rf /home/admin/iot-lab/exp_dir/$$f; mkdir /home/admin/iot-lab/exp_dir/$$f; done
 
-DOCKER_CN_MAPPING = 
+DOCKER_CN_MAPPING =
 ifneq (no, $(CONTROL_NODE_TYPE))
 DOCKER_CN_MAPPING = -v /dev/ttyCN:/dev/ttyCN
 endif
@@ -78,11 +78,11 @@ local-test:
 	tox
 
 local-integration-test: setup-cfg-dir
-	IOTLAB_GATEWAY_CFG_DIR=/tmp/cfg_dir
+	IOTLAB_GATEWAY_CFG_DIR= /home/admin/iot-lab/cfg_dir
 	tox -e tests
 
 local-run: setup-cfg-dir
-	IOTLAB_GATEWAY_CFG_DIR=/tmp/cfg_dir
+	IOTLAB_GATEWAY_CFG_DIR= /home/admin/iot-lab/cfg_dir
 	bin/scripts/gateway-rest-server $(HOST) $(PORT)
 
 # Get rid of pytest ImportMismatchError for future runs (either locally
