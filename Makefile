@@ -67,8 +67,8 @@ run: setup-cfg-dir setup-exp-dir
 		-v $(PWD):/shared \
 		-v /dev/iotlab:/dev/iotlab \
 		$(DOCKER_CN_MAPPING) \
-		-v /tmp/cfg_dir:/var/local/config \
-		-v /tmp/exp_dir:$(WORKDIR) \
+		-v /home/admin/iot-lab/cfg_dir:/var/local/config \
+		-v /home/admin/iot-lab/exp_dir:$(WORKDIR) \
 		-p $(PORT):8080 \
 		-p $(SERIAL_PORT):20000 \
 		--privileged \
