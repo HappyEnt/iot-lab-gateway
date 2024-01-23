@@ -91,6 +91,11 @@ class GatewayRest(bottle.Bottle):
         self.on_conditional_route('debug_stop', '/open/debug/stop', 'PUT',
                                   self.open_debug_stop)
 
+        self.on_conditional_route('rtt_start', '/open/rtt/start', 'PUT',
+                                  self.open_rtt_start)
+        self.on_conditional_route('rtt_stop', '/open/rtt/stop', 'PUT',
+                                  self.open_rtt_stop)
+
     def exp_start(self, user, exp_id):
         """
         Start an experiment
@@ -248,6 +253,19 @@ class GatewayRest(bottle.Bottle):
         LOGGER.debug('REST: Stop debug OpenNode')
         ret = self.gateway_manager.open_debug_stop()
         return {'ret': ret}
+
+    def open_rtt_start(self):
+        """ Start open node debugger """
+        LOGGER.debug('REST: RTT OpenNode')
+        ret = self.gateway_manager.open_rtt_start()
+        return {'ret': ret}
+
+    def open_rtt_stop(self):
+        """ Stop open node debugger """
+        LOGGER.debug('REST: Stop RTT OpenNode')
+        ret = self.gateway_manager.open_rtt_stop()
+        return {'ret': ret}
+
 
     def auto_tests(self, mode=None):
         """ Run auto-tests
