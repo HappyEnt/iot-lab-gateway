@@ -89,6 +89,7 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
     RTT = (
         " -c 'rtt setup {start} {search_bytes} \"{name}\"' "
         " -c 'rtt start' "
+        " -c 'rtt channels' "
         " -c 'rtt server start {port} {channel} \"RTT Terminal\"' "
     )
 
