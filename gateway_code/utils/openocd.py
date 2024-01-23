@@ -86,9 +86,16 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
         ' -c "shutdown"'
     )
 
+    RTT = (
+        ' -c "rtt setup {control_block_start} {control_block_search_bytes} "{control_block_name}" '
+        ' -c "rtt start" '
+        ' -c "rtt server start {rtt_port} {rtt_channel} "RTT Terminal" '
+    )
+
     DEBUG = (
         ' -c "reset halt"'
     )
+
     TIMEOUT = 100
 
     def __init__(self, openocd_args,
@@ -112,6 +119,7 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
         self.out = None if verb else self.DEVNULL
 
         self._debug = None
+        self._rtt = None
         atexit.register(self.debug_stop)
 
     @staticmethod
@@ -136,6 +144,37 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
     def reset(self):
         """ Reset """
         return self._call_cmd(self.RESET)
+
+    def rtt_start(self, control_block_start = 0x20000000, control_block_search_bytes = 10000,
+            control_block_name = "SEGGER RTT", rtt_port = 20001, rtt_channel = 0):
+        """ Start RTT server """
+        self._rtt = subprocess.Popen(
+            **self._openocd_args(self.RTT.format(
+                control_block_start,
+                control_block_search_bytes,
+                control_block_name,
+                rtt_port,
+                rtt_channel)))
+        return 0
+
+    def rtt_stop(self):
+        """ Stop the debugger process """
+
+        if self._rtt == None:
+            return 0
+
+        try:
+            LOGGER.debug('RTT stop')
+            self._rtt.terminate()
+        except AttributeError:
+            LOGGER.debug('RTT not started.')  # None
+        except OSError as err:
+            LOGGER.error('RTT stop error: %r', err)
+            return 1
+        finally:
+            self._rtt = None
+            LOGGER.debug('RTT stopped')
+        return 0
 
     def flash(self, fw_file, binary=False, offset=0):
         """ Flash firmware """
@@ -165,6 +204,10 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
 
     def debug_stop(self):
         """ Stop the debugger process """
+
+        if self._debug == None:
+            return 0
+
         try:
             LOGGER.debug('Debug stop')
             self._debug.terminate()

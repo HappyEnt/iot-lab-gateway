@@ -178,6 +178,7 @@ class GatewayManager:  # pylint:disable=too-many-instance-attributes
             ret_val += self.control_node.open_stop()
             ret_val += self.control_node.open_start()
 
+
         if timeout != 0:
             LOGGER.debug("Setting timeout to: %d", timeout)
             self.timeout_timer = Timer(timeout, self._timeout_exp_stop,
@@ -300,6 +301,26 @@ class GatewayManager:  # pylint:disable=too-many-instance-attributes
         ret = self._nodes['open'].debug_start()
         if ret != 0:  # pragma: no cover
             LOGGER.error('Open node debugger start failed')
+        return ret
+
+    @common.synchronous('rlock')
+    def open_rtt_start(self):
+        """ Start open node RTT """
+        LOGGER.info('Open node RTT start')
+
+        ret = self._nodes['open'].rtt_start()
+        if ret != 0:  # pragma: no cover
+            LOGGER.error('Open node RTT start failed')
+        return ret
+
+    @common.synchronous('rlock')
+    def open_rtt_stop(self):
+        """ Stop open node RTT """
+        LOGGER.info('Open node RTT stop')
+
+        ret = self._nodes['open'].rtt_stop()
+        if ret != 0:  # pragma: no cover
+            LOGGER.error('Open node RTT stop failed')
         return ret
 
     @common.synchronous('rlock')

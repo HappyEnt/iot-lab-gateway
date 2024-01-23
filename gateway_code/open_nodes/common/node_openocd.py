@@ -136,6 +136,16 @@ class NodeOpenOCDBase(OpenNodeBase):
         LOGGER.info('openocd node debugger stop')
         return self.openocd.debug_stop()
 
+    def rtt_start(self):
+        """ Start openocd node debugger """
+        LOGGER.info('openocd node rtt start')
+        return self.openocd.rtt_start()
+
+    def rtt_stop(self):
+        """ Stop openocd node debugger """
+        LOGGER.info('openocd node rtt stop')
+        return self.openocd.rtt_stop()
+
     def status(self):
         """ Check openocd node status """
         # Status is called when open node is not powered
