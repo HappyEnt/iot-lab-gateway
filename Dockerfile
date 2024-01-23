@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 MAINTAINER Cédric Roussel <cedric.roussel@inria.fr>
 
 # This file is a part of IoT-LAB gateway_code
@@ -41,6 +41,7 @@ RUN apt-get update && \
         libsqlite3-dev \
         libpopt-dev \
         libxml2-dev \
+        libjaylink-dev\
         ruby \
         libtool \
         pkg-config \
@@ -79,12 +80,11 @@ RUN mkdir /var/www && chown www-data:www-data /var/www
 #     make install && \
 #     cd .. && rm -rf openocd10
 
-#openocd dev
+#openocd HEAD
 RUN git clone https://github.com/ntfreak/openocd openocd-dev && \
     cd openocd-dev && \
-    git checkout 7c88e76a76588fa0e3ab645adfc46e8baff6a3e4 && \
     ./bootstrap && \
-    ./configure --enable-cmsis-dap --enable-hidapi-libusb && \
+    ./configure --enable-cmsis-dap --enable-hidapi-libusb --enable-jlink --disable-werror && \
     make && \
     make install && \
     cd .. && rm -rf openocd-dev
