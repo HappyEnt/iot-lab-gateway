@@ -2,6 +2,7 @@ BOARD ?= m3
 HOST ?= 0.0.0.0
 PORT ?= 8080
 SERIAL_PORT ?= 20000
+RTT_PORT ?= 20001
 CONTROL_NODE_TYPE ?= no
 POSARGS ?=
 TOXENV ?=
@@ -71,6 +72,7 @@ run: setup-cfg-dir setup-exp-dir
 		-v /home/admin/iot-lab/exp_dir:$(WORKDIR) \
 		-p $(PORT):8080 \
 		-p $(SERIAL_PORT):20000 \
+		-p $(RTT_PORT):20001 \
 		--privileged \
 		$(DOCKER_IMAGE)
 

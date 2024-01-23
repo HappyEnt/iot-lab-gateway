@@ -87,9 +87,9 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
     )
 
     RTT = (
-        ' -c "rtt setup {control_block_start} {control_block_search_bytes} "{control_block_name}" '
+        ' -c "rtt setup {start} {search_bytes} "{name}" '
         ' -c "rtt start" '
-        ' -c "rtt server start {rtt_port} {rtt_channel} "RTT Terminal" '
+        ' -c "rtt server start {port} {channel} "RTT Terminal" '
     )
 
     DEBUG = (
@@ -150,11 +150,11 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
         """ Start RTT server """
         self._rtt = subprocess.Popen(
             **self._openocd_args(self.RTT.format(
-                control_block_start,
-                control_block_search_bytes,
-                control_block_name,
-                rtt_port,
-                rtt_channel)))
+                start=control_block_start,
+                search_bytes=control_block_search_bytes,
+                name=control_block_name,
+                port=rtt_port,
+                channel=rtt_channel)))
         return 0
 
     def rtt_stop(self):
