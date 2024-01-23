@@ -87,9 +87,9 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
     )
 
     RTT = (
-        ' -c "rtt setup {start} {search_bytes} "{name}" '
-        ' -c "rtt start" '
-        ' -c "rtt server start {port} {channel} "RTT Terminal" '
+        " -c 'rtt setup {start} {search_bytes} \"{name}\"' "
+        " -c 'rtt start' "
+        " -c 'rtt server start {port} {channel} \"RTT Terminal\"' "
     )
 
     DEBUG = (
@@ -116,7 +116,8 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
                 serial=openocd_args.serial_number
             )
 
-        self.out = None if verb else self.DEVNULL
+        # self.out = None if verb else self.DEVNULL
+        self.out = None
 
         self._debug = None
         self._rtt = None
@@ -238,6 +239,9 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
     def _openocd_args(self, command_str):
         """ Get subprocess arguments for command_str """
         # Generate full command arguments
+
+        LOGGER.info(command_str)
+
         cmd = self.OPENOCD.format(
             openocd_path=self.openocd_path,
             serial_cmd=self.serial_cmd,
@@ -245,6 +249,7 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
             bind_ip=self.bind_ip,
             cmd=command_str
         )
+
         args = shlex.split(cmd)
         return {'args': args, 'stdout': self.out, 'stderr': self.out}
 

@@ -84,7 +84,7 @@ RUN mkdir /var/www && chown www-data:www-data /var/www
 RUN git clone https://github.com/ntfreak/openocd openocd-dev && \
     cd openocd-dev && \
     ./bootstrap && \
-    ./configure --enable-cmsis-dap --enable-hidapi-libusb --enable-jlink --disable-werror && \
+    ./configure --enable-cmsis-dap --enable-hidapi-libusb --enable-jlink --enable-rtt --disable-werror && \
     make && \
     make install && \
     cd .. && rm -rf openocd-dev
