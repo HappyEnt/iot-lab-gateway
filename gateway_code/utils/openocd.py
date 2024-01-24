@@ -147,7 +147,7 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
         """ Reset """
         return self._call_cmd(self.RESET)
 
-    def rtt_start(self, control_block_start = 0x20000000, control_block_search_bytes = 10000,
+    def rtt_start(self, control_block_start = 0x20000000, control_block_search_bytes = 0x10000,
             control_block_name = "SEGGER RTT", rtt_port = 20001, rtt_channel = 0):
         """ Start RTT server """
         self._rtt = subprocess.Popen(
@@ -287,3 +287,4 @@ class OpenOCD:   # pylint:disable=too-many-instance-attributes
                 nodeclass.OPENOCD_SERIAL_CMD,
             ), *args, **kwargs
         )
+
